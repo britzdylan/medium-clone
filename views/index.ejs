@@ -1,0 +1,22 @@
+<%- include('partials/head') %>
+    <section id="container-home" class="grid grid-cols-3 gap-4 divide-x divide-gray-200">
+        <!-- articles -->
+        <div id="articles" class="col-span-2 ">
+
+            <div class="text-gray-700 body-font overflow-hidden">
+                    <!-- single article -->
+                    <%- include('partials/articlePreview') %>
+                    <%- include('partials/articlePreview') %>
+                    <!-- ================= -->
+            </div>
+
+        </div>
+        <!-- ///////////// -->
+
+        <div id="topics" class="col-span-1 pl-5">
+            <h2 class="text-gray-900 text-2xl font-bold mb-10">Browse by topic</h2>
+            <%- include('partials/topic') %>
+            <%- include('partials/topic') %>
+        </div>
+    </section>
+<%- include('partials/footer') %>
