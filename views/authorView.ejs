@@ -1,3 +1,23 @@
-<%- include('partials/head') %>
-    <h1>Author View</h1>
+<%- include('partials/head', {Title: ""})  %>
+    <section class="w-1/2 mx-auto">
+        <div id="author-details" class="flex flex-row mb-5">
+            <div class="text-gray-700 text-sm">
+                <h1 class="text-black font-bold text-3xl">Chris Geelhoud</h1>
+                <p class="mb-5">Software developer and teacher</p>
+                <p>Twitter</p>
+            </div>
+            <div class="ml-auto">
+                <div class="rounded-full h-24 w-24 flex items-center justify-center overflow-hidden">
+                    <img  class="object-cover" src="https://miro.medium.com/fit/c/128/128/2*6g5QCj-hCnO0-6VL7giMvw.jpeg" />
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="text-gray-700 body-font overflow-hidden">
+            <!-- single article -->
+            <%- include('partials/articlePreview') %>
+            <%- include('partials/articlePreview') %>
+            <!-- ================= -->
+    </div>
+    </section>
 <%- include('partials/footer') %>

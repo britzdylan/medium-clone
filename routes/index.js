@@ -7,7 +7,7 @@ router.get('/', (req, res) => {
 })
 
 router.get("/:topicslug", (req,res) => {
-    res.render('topicView', { topicSlug : req.params.topicslug})
+    res.render('topicView', { topicSlug : req.params.topicslug.charAt(0).toUpperCase() + req.params.topicslug.slice(1).replace("-", " ") })
 })
 
 module.exports = router;

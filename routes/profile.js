@@ -2,7 +2,7 @@ const express = require('express')
 // const Article = require('./../models/article')
 const router = express.Router()
 
-router.get('/:id', (req, res) => { 
+router.get('/id/:id', (req, res) => { 
     res.render('profile')
 })
 
@@ -16,7 +16,17 @@ router.post('/login', (req, res) => { })
 
 router.post('/logout', (req, res) => { })
 
-router.post('/register', (req, res) => { })
+router.get('/register', (req, res) => { 
+    res.render('signup')
+})
+
+router.get('/login', (req, res) => { 
+    res.render('signin')
+})
+
+router.post('/register/:id', (req, res) => { 
+    
+ })
 
 router.delete('/delete/profile/:profielId', (req, res) => { })
 
