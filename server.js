@@ -18,6 +18,10 @@ app.use(express.urlencoded({ extended: false }))
 
 //db connection
 
+mongoose.connect('mongodb://localhost/medium-blog', {
+  useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true
+})
+
 //routes
 app.use('/', indexRouter)
 app.use('/article', articleRouter)

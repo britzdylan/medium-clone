@@ -1,0 +1,35 @@
+<%- include('partials/head', {Title: "Create new article"}) %>
+
+
+    <section>
+        <h1 class="font-bold text-4xl mb-20">Create new article</h1>
+        <div class="w-2/3 mx-auto">
+
+      
+            <form action="/profile/new/article" method="POST">
+                <label class="mt-10 text-lg block" for="title">Title</label>
+                <input value="<%= article.title %>" class="w-full mt-2 py-3 px-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-400 dark:border-gray-700 text-gray-800 font-semibold focus:border-indigo-500 focus:outline-none" required type="text" name="title" id="title" placeholder="My Article Title" >
+                
+                <label class="mt-10 text-lg block" for="description">Description</label>
+                <textarea class="w-full mt-2 py-3 px-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-400 dark:border-gray-700 text-gray-800 font-semibold focus:border-gray-500 focus:outline-none" maxlength="158" required type="text" name="description" id="decription" ><%= article.description %></textarea>
+
+                <label class="mt-10 text-lg block" for="topics">Topics</label>
+                <select required name="topics" id="topics" class="w-full mt-2 py-3 px-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-400 dark:border-gray-700 text-gray-800 font-semibold focus:border-gray-500 focus:outline-none" multiple>
+                    <option>Topic One</option>
+                    <option>Topic Two</option>
+                </select>
+
+                <label class="mt-10 text-lg block" for="content">Content</label>
+                <textarea class="mb-10 w-full mt-2 py-3 px-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-400 dark:border-gray-700 text-gray-800 font-semibold focus:border-gray-500 focus:outline-none" rows="24" required type="text" name="markdown" id="markdown" ><%= article.markdown %></textarea>
+                
+                <button type="submit" class="cursor-pointer border-2 text-gray-900 text-lg font-bold py-1 px-2 rounded">Save & Publish</button>
+            </form>
+            <% if(error === 11000) { %>
+            <p>Article title is already in use</p>
+            <% }%>
+
+        </div>
+    </section>
+
+
+<%- include('partials/footer') %>

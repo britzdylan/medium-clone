@@ -37,7 +37,8 @@ const articleSchema = new mongoose.Schema({
     },
     authorId: {
         type: String,
-        required: true
+        required: true,
+        default: "admin"
     },
     upVotes: {
         type: Number
