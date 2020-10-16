@@ -1,14 +1,14 @@
 <%- include('partials/head', {Title: `Topic Name`}) %>
     <section>
         <div id="article-heading" class="w-1/2 mx-auto ">
-            <h1 class="font-bold text-4xl">Nuxt and Headless Wordpress: Motivations and Challenges</h1>
+            <h1 class="font-bold text-4xl"><%= article.title %></h1>
             <div id="profile-card" class="flex flex-row mt-10 items-center">
                 <div class="rounded-full h-8 w-8 mr-5 cursor-pointer flex items-center justify-center overflow-hidden">
-                    <a href="/author/id"><img  class="object-cover" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" /></a>
+                    <a href="/author/<%= article.authorId %>"><img  class="object-cover" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" /></a>
                 </div>
                 <div class="text-gray-700">
-                    <a href="/author/id"><p class="font-bold">Chris Geelhoed</p></a>
-                    <p>9/12/2020</p>
+                    <a href="/author/<%= article.authorId %>"><p class="font-bold">Chris Geelhoed</p></a>
+                    <p><%= article.createdAt.toLocaleDateString() %></p>
                 </div>
                 <div class="ml-auto">
                     <p>Upvote</p>
@@ -18,10 +18,10 @@
 
         <div id="article-body">
             <div class="w-2/3 mx-auto my-20">
-                <img width="100%" src="https://miro.medium.com/max/1000/1*5hMXUaKRbpp_oT4vDVdBSg.jpeg" />
+                <img width="100%" src="/uploads/<%= article.cover %>" />
             </div>
             <article class="w-1/2 mx-auto ">
-                <p>Nuxt is a Vue.js framework (Nuxt is built “on top” of Vue) that provides an opinionated structure to Single Page Applications (SPAs). In addition to all the features that Vue gives developers access to, Nuxt supports things like Server Side Rendering (SSR), easy page routing, and middleware. This has made the framework a great option for developing Javascript heavy web apps.</p>
+                <%- article.sanitizedHtml %>           
             </article>
         </div>
     </section>

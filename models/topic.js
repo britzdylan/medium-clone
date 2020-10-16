@@ -4,7 +4,7 @@ const slugify = require('slugify')
 
 
 const topicSchema = new mongoose.Schema({
-    title: {
+    topic: {
         type: String,
         required: true,
         unique: true
@@ -27,4 +27,4 @@ topicSchema.pre('validate', function(next) {
     next()
 })
 
-module.exports = mongoose.model('Topic', topicSchema)
+module.exports = mongoose.model('topics', topicSchema)

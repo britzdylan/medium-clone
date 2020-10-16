@@ -5,8 +5,11 @@
 
         <div class="text-gray-700 body-font overflow-hidden">
                 <!-- single article -->
-                <%- include('partials/articlePreview') %>
-                <%- include('partials/articlePreview') %>
+               
+                    <% articles.map((item,index) => { %>
+                        <%- include('partials/articlePreview', {article: item}) %>
+                    <% }) %>
+               
                 <!-- ================= -->
         </div>
 
@@ -14,8 +17,9 @@
     <!-- ///////////// -->
     <div id="topics" class="col-span-1 pl-5">
         <h2 class="text-gray-900 text-2xl font-bold mb-10">Browse by topic</h2>
-        <%- include('partials/topic') %>
-        <%- include('partials/topic') %>
+        <% topics.map((item,index) => { %>
+            <%- include('partials/topic', { topic: item }) %>
+            <% }) %>
     </div>
 </section>
 <%- include('partials/footer') %>

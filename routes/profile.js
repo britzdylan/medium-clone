@@ -1,5 +1,6 @@
 const express = require('express')
 const Article = require('./../models/article')
+const Topic = require('./../models/topic')
 const router = express.Router()
 
 //multer for file uploads
@@ -46,14 +47,15 @@ if(mimetype && extname){
 }
 
 
-//get file name
 
 
 // create a new article
 router.post('/new-article/create', async (req, res, next) => {  
+  const topics = await Topic.find().sort({ topic: 'asc' })
   upload( req, res, (err) => {
     if(err) {
-      res.render('newArticle', {article: new Article(), error: "", imageErr: err}) //pass error message
+
+      res.render('newArticle', {article: new Article(), error: "", imageErr: err, topics : topics }) //pass error message
     } else {
       req.article = new Article() //pass in article model
       
@@ -64,8 +66,10 @@ router.post('/new-article/create', async (req, res, next) => {
 },saveArticleAndRedirect())// call function to save and redirect
 
 // get view to create a new article, pass article model
-router.get('/new-article', (req, res) => { 
-    res.render('newArticle', { article: new Article(), error: "", imageErr: null  })
+router.get('/new-article', async (req, res) => { 
+    //get all topics
+    const topics = await Topic.find().sort({ topic: 'asc' })
+    res.render('newArticle', { article: new Article(), error: "", imageErr: null, topics : topics  })
 })
 
 router.put('/edit/:articleId', (req, res) => { })
@@ -99,13 +103,15 @@ function saveArticleAndRedirect() { //save new article and redirect or show an e
       article.markdown = req.body.markdown
       article.topics = req.body.topics
       article.cover = req.file.filename
-      console.log(req.file, 'from next function');
+
+     
+
       try {
         article = await article.save()
         res.redirect(`/article/${article.slug}`) //redirect to the new article
       } catch (e) {
           console.log(e)
-        res.render('newArticle', {article: article, error: e.code, imageErr: null}) //pass error message
+        res.render('newArticle', {article: article, error: e.code, imageErr: null, topics : topics }) //pass error message
       }
     }
   }
