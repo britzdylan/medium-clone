@@ -1,5 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose')
+const bodyParser = require('body-parser');
+const fs = require('fs'); 
+const path = require('path'); 
 
 // import route handlers
 const indexRouter = require('./routes/index')
@@ -9,7 +12,7 @@ const profileRouter = require('./routes/profile')
 
 //load app to express
 const app = express();
-app.use(express.static('public'))
+app.use(express.static('./public'))
 
 //set view engine
 app.set('view engine', 'ejs')

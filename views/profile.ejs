@@ -1,3 +1,28 @@
 <%- include('partials/head', { Title: "My Profile"}) %>
-    <h1>Profile Page</h1>
+    <section class="w-1/2 mx-auto">
+        <div id="author-details" class="flex flex-row mb-5">
+            <div class="text-gray-700 text-sm">
+                <h1 class="text-black font-bold text-3xl">Chris Geelhoud</h1>
+                <p class="mb-5">Software developer and teacher</p>
+                <p>Twitter</p>
+            </div>
+            <div class="ml-auto">
+                <div class="rounded-full h-24 w-24 flex items-center justify-center overflow-hidden">
+                    <img  class="object-cover" src="https://miro.medium.com/fit/c/128/128/2*6g5QCj-hCnO0-6VL7giMvw.jpeg" />
+                </div>
+            </div>
+            
+        </div>
+        <div class="mb-5">
+            <a href="/profile/new-article"><button class="border-2 border-green-500 text-green-600 hover:bg-green-100 mr-5 text-small  py-1 px-2 rounded">New Article</button></a>
+            <button class="border-2 border-gray-600 text-gray-900 text-small hover:bg-gray-200 font-light py-1 px-2 rounded">Edit Profile</button>
+        </div>
+        <hr />
+        <div class="text-gray-700 body-font overflow-hidden">
+            <!-- single article -->
+            <%- include('partials/ProfileArticles') %>
+            <%- include('partials/ProfileArticles') %>
+            <!-- ================= -->
+    </div>
+    </section>
 <%- include('partials/footer') %>

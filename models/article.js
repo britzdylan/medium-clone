@@ -15,6 +15,10 @@ const articleSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    cover : {
+        type: String,
+        required: true
+    },
     markdown : {
         type: String,
         required: true
