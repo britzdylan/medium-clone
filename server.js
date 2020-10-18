@@ -3,12 +3,14 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser');
 const fs = require('fs'); 
 const path = require('path'); 
+const cookieSession = require("cookie-session");
 
 // import route handlers
 const indexRouter = require('./routes/index')
 const articleRouter = require('./routes/article')
 const authorRouter = require('./routes/author')
 const profileRouter = require('./routes/profile')
+const passport = require("passport");
 
 //load app to express
 const app = express();
@@ -17,6 +19,16 @@ app.use(express.static('./public'))
 //set view engine
 app.set('view engine', 'ejs')
 app.use(express.urlencoded({ extended: false }))
+
+//passportjs setup
+app.use(cookieSession({
+  // milliseconds of a day
+  maxAge: 24*60*60*1000,
+  keys:[process.env.COOKIESESSION || "a56s1d612f65a16a1d6"]
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 //db connection

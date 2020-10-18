@@ -35,15 +35,14 @@ const articleSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    topics: {
-        type: Array,
-        required: true
-    },
-    authorId: {
-        type: String,
-        required: true,
-        default: "admin"
-    },
+    topics: [{
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'topics'
+    }],
+    author: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Author' 
+      },
     upVotes: {
         type: Number
     },

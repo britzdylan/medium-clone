@@ -2,6 +2,10 @@ const mongoose = require('mongoose')
 const slugify = require('slugify')
 
 const authorSchema = new mongoose.Schema({
+    googleId : {
+        type: String,
+        required: true
+    },
     email : {
         type: String,
         required: true,
@@ -28,12 +32,15 @@ const authorSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true
-    }
+    },
+    articles : [
+        { type: mongoose.Schema.Types.ObjectId, ref: 'Article' }
+      ]
 })
 
 authorSchema.pre('validate', function(next) {
-    if (this.title) {
-        this.slug = slugify(this.title, { lower: true, strict: true})
+    if (this.username) {
+        this.slug = slugify(this.username, { lower: true, strict: true})
     }
 
     next()
