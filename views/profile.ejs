@@ -1,21 +1,22 @@
-<%- include('partials/head', { Title: "My Profile"}) %>
+<%- include('partials/head', { Title: myProfile.fName}) %>
     <section class="w-1/2 mx-auto">
         <div id="author-details" class="flex flex-row mb-5">
             <div class="text-gray-700 text-sm">
-                <h1 class="text-black font-bold text-3xl">Chris Geelhoud</h1>
+                <h1 class="text-black font-bold text-3xl"><%= myProfile.fName.charAt(0).toUpperCase() + myProfile.fName.slice(1) + " " + myProfile.lName.charAt(0).toUpperCase() + myProfile.lName.slice(1) %></h1>
                 <p class="mb-5">Software developer and teacher</p>
                 <p>Twitter</p>
             </div>
             <div class="ml-auto">
                 <div class="rounded-full h-24 w-24 flex items-center justify-center overflow-hidden">
-                    <img  class="object-cover" src="https://miro.medium.com/fit/c/128/128/2*6g5QCj-hCnO0-6VL7giMvw.jpeg" />
+                    <img  class="object-cover" src="<%= myProfile.profilePicture %>" />
                 </div>
             </div>
             
         </div>
-        <div class="mb-5">
+        <div class="mb-5 w-full flex flex-row">
             <a href="/profile/new-article"><button class="border-2 border-green-500 text-green-600 hover:bg-green-100 mr-5 text-small  py-1 px-2 rounded">New Article</button></a>
-            <button class="border-2 border-gray-600 text-gray-900 text-small hover:bg-gray-200 font-light py-1 px-2 rounded">Edit Profile</button>
+            <button class="text-gray-900 text-small hover:bg-gray-200 font-light py-1 px-2 rounded">Edit myProfile</button>
+            <a class="ml-auto" href="/profile/auth/logout"><button class="hover:bg-gray-200 text-gray-600 mr-5  text-small py-1 px-2 rounded">Log Out</button></a>
         </div>
         <hr />
         <div class="text-gray-700 body-font overflow-hidden">

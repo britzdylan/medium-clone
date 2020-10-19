@@ -10,8 +10,8 @@ router.get('/', async (req, res) => {
 })
 
 router.get("/:topicslug", async (req,res) => {
-    const articles = await await Article.find({ topics: req.params.topicslug })
     const topics = await Topic.find().sort({ topic: 'asc' })
+    const articles = await Article.find({ topics: req.params.topicslug })
     res.render('topicView', { topicSlug : req.params.topicslug.charAt(0).toUpperCase() + req.params.topicslug.slice(1).replace("-", " "), articles: articles, topics: topics })
 })
 

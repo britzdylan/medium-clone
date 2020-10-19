@@ -35,10 +35,7 @@ const articleSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    topics: [{
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'topics'
-    }],
+    topics: [String],
     author: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Author' 

@@ -33,13 +33,12 @@ const authorSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    articles : [
-        { type: mongoose.Schema.Types.ObjectId, ref: 'Article' }
-      ]
+    articles : [Object]
 })
 
 authorSchema.pre('validate', function(next) {
     if (this.username) {
+        
         this.slug = slugify(this.username, { lower: true, strict: true})
     }
 

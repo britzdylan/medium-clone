@@ -1,13 +1,13 @@
-<%- include('partials/head', {Title: `Topic Name`}) %>
+<%- include('partials/head', {Title: article.title}) %>
     <section>
         <div id="article-heading" class="w-1/2 mx-auto ">
             <h1 class="font-bold text-4xl"><%= article.title %></h1>
             <div id="profile-card" class="flex flex-row mt-10 items-center">
                 <div class="rounded-full h-8 w-8 mr-5 cursor-pointer flex items-center justify-center overflow-hidden">
-                    <a href="/author/<%= article.authorId %>"><img  class="object-cover" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" /></a>
+                    <a href="/author/<%= author.slug %>"><img  class="object-cover" src="<%= author.profilePicture %>" /></a>
                 </div>
                 <div class="text-gray-700">
-                    <a href="/author/<%= article.authorId %>"><p class="font-bold">Chris Geelhoed</p></a>
+                    <a href="/author/<%= author.slug %>"><p class="font-bold"><%= author.fName.charAt(0).toUpperCase() + author.fName.slice(1) %>  <%= author.lName.charAt(0).toUpperCase() + author.lName.slice(1) %></p></a>
                     <p><%= article.createdAt.toLocaleDateString() %></p>
                 </div>
                 <div class="ml-auto">

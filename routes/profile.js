@@ -3,7 +3,8 @@ const Article = require('./../models/article')
 const Topic = require('./../models/topic')
 const Author = require('./../models/author')
 const passport = require("passport");
-const {GoogleStrategy, checkAuthenticated, checkNotAuthenticated} = require('./../utils/passport-google-auth')
+
+const {GoogleStrategy , checkAuthenticated, checkNotAuthenticated} = require('./../utils/passport-google-auth')
 
 const router = express.Router()
 
@@ -76,6 +77,7 @@ router.post('/new-article/create', async (req, res, next) => {
 
       res.render('newArticle', {article: new Article(), error: "", imageErr: err, topics : topics }) //pass error message
     } else {
+
       req.article = new Article() //pass in article model
 
     }
@@ -120,7 +122,7 @@ router.post('/logout', (req, res) => { })
 Get the signin page 
 
 */
-router.get('/login', async (req, res) => { 
+router.get('/login', checkAuthenticated, async (req, res) => { 
   res.render('signin')
 })
 
@@ -135,26 +137,28 @@ router.get("/auth/google", passport.authenticate("google", {
   scope: ["profile", "email"]
 }));
 
+
+// after the user logs in successfully then redirect to the profile page 
 router.get("/auth/google/redirect", passport.authenticate('google'),(req,res)=>{
-  res.send(req.user);
-  res.send("you reached the redirect URI");
+  res.redirect(`/profile/@${req.user.slug}`)
 });
 
+// Render the profile page with the data from the current logged in user
+router.get("/:profileslug", checkNotAuthenticated,(req,res)=>{
+  //const myProfile = Author.findOne({ _id: req.user._id})
+  res.render("profile", { myProfile : req.user})
+});
+
+
+// logout the current user and 
 router.get("/auth/logout", (req, res) => {
   req.logout();
-  res.send(req.user);
+  res.redirect('/');
 });
 
 // ================
 
-
-
-router.post('/register/:id', (req, res) => { 
-    
- })
-
 router.delete('/delete/profile/:profielId', (req, res) => { })
-
 
 /*
 @Function: saveArticleAndRedirect
@@ -173,7 +177,7 @@ function saveArticleAndRedirect(author) {
 
     return async (req, res) => { //get all data from the body
 
-      const author = await Author.findById({ _id: "5f8b017019e2fb12f4855b0d"})
+      let author = await Author.findById({ _id: req.user._id})
 
       let article = req.article // get the article form the request body
       article.title = req.body.title 
@@ -181,13 +185,11 @@ function saveArticleAndRedirect(author) {
       article.markdown = req.body.markdown
       article.topics = req.body.topics
       article.cover = req.file.filename
-      article.author = "5f8b017019e2fb12f4855b0d"
-
-     
+      article.author = req.user._id //asign the id of the signed in user
 
       try {
         article = await article.save() //try and save the article
-        author = await author.articles.push() 
+        //author = await author.articles.push(article) 
         res.redirect(`/article/${article.slug}`) //redirect to the new article
       } catch (e) {
         console.log(e) // log the error

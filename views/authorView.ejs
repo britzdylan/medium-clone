@@ -1,22 +1,23 @@
-<%- include('partials/head', {Title: ""})  %>
+<%- include('partials/head', {Title: author.fName.charAt(0).toUpperCase() + author.fName.slice(1)})  %>
     <section class="w-1/2 mx-auto">
         <div id="author-details" class="flex flex-row mb-5">
             <div class="text-gray-700 text-sm">
-                <h1 class="text-black font-bold text-3xl">Chris Geelhoud</h1>
+                <h1 class="text-black font-bold text-3xl"><%= author.fName.charAt(0).toUpperCase() + author.fName.slice(1) %>  <%= author.lName.charAt(0).toUpperCase() + author.lName.slice(1) %></h1>
                 <p class="mb-5">Software developer and teacher</p>
                 <p>Twitter</p>
             </div>
             <div class="ml-auto">
                 <div class="rounded-full h-24 w-24 flex items-center justify-center overflow-hidden">
-                    <img  class="object-cover" src="https://miro.medium.com/fit/c/128/128/2*6g5QCj-hCnO0-6VL7giMvw.jpeg" />
+                    <img  class="object-cover" src="<%= author.profilePicture %>" />
                 </div>
             </div>
         </div>
         <hr />
         <div class="text-gray-700 body-font overflow-hidden">
             <!-- single article -->
-            <%- include('partials/articlePreview') %>
-            <%- include('partials/articlePreview') %>
+            <% articles.map((item,index) => { %>
+                <%- include('partials/articlePreview', {article: item}) %>
+            <% }) %>
             <!-- ================= -->
     </div>
     </section>

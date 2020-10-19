@@ -13,9 +13,6 @@ const topicSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true
-    },
-    articles: {
-        type: [String]
     }
 })
 

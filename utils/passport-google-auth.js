@@ -1,5 +1,5 @@
 const Author = require('./../models/author')
-
+const slugify = require('slugify')
 // OAuth
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
@@ -12,25 +12,53 @@ passport.use(
     }, (accessToken, refreshToken, profile, done) => {
   
         //passport callback function
+
         //check if user already exists in our db with the given profile ID
         Author.findOne({googleId: profile.id}).then((currentUser)=>{
           if(currentUser){
             //if we already have a record with the given profile ID
             done(null, currentUser);
           } else {
-            //if not, create a new user 
-            new Author({
-              googleId: profile.id,
-              email : profile.emails[0].value ,
-              fName : profile.name.givenName,
-              lName : profile.name.familyName,
-              username: profile.displayName.replace(" ", "-"),
-              profilePicture : profile.photos[0].value,
-            }).save().then((newUser) =>{
-              done(null, newUser)
+            let userName = slugify(profile.displayName.replace(" ", "-"), { lower: true, strict: true})
+            Author.countDocuments({slug: userName}).then((currentUSer)=>{
+              if(currentUSer >= 1) {
+                const count = currentUSer + 1
+                new Author({
+                    googleId: profile.id,
+                    email : profile.emails[0].value ,
+                    fName : profile.name.givenName,
+                    lName : profile.name.familyName,
+                    username: userName + count,
+                    profilePicture : profile.photos[0].value,
+                  }).save().then((newUser) =>{
+                    done(null, newUser)
+                  })
+              } else {
+                new Author({
+                  googleId: profile.id,
+                  email : profile.emails[0].value ,
+                  fName : profile.name.givenName,
+                  lName : profile.name.familyName,
+                  username: userName,
+                  profilePicture : profile.photos[0].value,
+                }).save().then((newUser) =>{
+                  done(null, newUser)
+                })
+              }
             })
           }
-        })
+           // console.log(userName, checkSlug);
+                // new Author({
+                //   googleId: profile.id,
+                //   email : profile.emails[0].value ,
+                //   fName : profile.name.givenName,
+                //   lName : profile.name.familyName,
+                //   username: userName,
+                //   profilePicture : profile.photos[0].value,
+                // }).save().then((newUser) =>{
+                //   done(null, newUser)
+                // }
+      })
     }
   ));
 
@@ -48,10 +76,10 @@ passport.serializeUser((user, done) => {
 
   const checkAuthenticated = function checkAuthenticated(req, res, next) {
     if (req.user) {
-      return next()
+      return res.redirect(`/profile/@${req.user.slug}`)
     }
   
-    res.redirect('/login')
+   next()
   }
   
   const checkNotAuthenticated = function checkNotAuthenticated(req, res, next) {
@@ -59,6 +87,16 @@ passport.serializeUser((user, done) => {
       return res.redirect('/profile/login')
     }
     next()
+  }
+
+  const checkForSlug = async function(username) {
+   const k = await Author.findOne({slug: username})
+   try {
+     return k
+   } 
+   catch(e) {
+    console.log(e);
+   }
   }
 
   module.exports = {GoogleStrategy, checkAuthenticated, checkNotAuthenticated}
