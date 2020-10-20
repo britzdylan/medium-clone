@@ -79,7 +79,7 @@ router.post('/new-article/create', async (req, res, next) => {
     } else {
 
       req.article = new Article() //pass in article model
-
+      //req.user = Author.findById(req.user.id) //find the current user
     }
     next()
   })
@@ -104,6 +104,7 @@ get view to create a new article, pass article model
 router.get('/new-article', checkNotAuthenticated, async (req, res) => { 
     //get all topics
     const topics = await Topic.find().sort({ topic: 'asc' })
+
     res.render('newArticle', { article: new Article(), error: "", imageErr: null, topics : topics  })
 })
 
@@ -111,11 +112,17 @@ router.get('/new-article', checkNotAuthenticated, async (req, res) => {
 
 router.put('/edit/:articleId', (req, res) => { })
 
-router.delete('/delete/:articleId', (req, res) => { })
+router.delete('/:id', async (req, res) => {
 
-router.post('/login', (req, res) => { })
+  const article = await Article.findById(req.params.id)
+  await Article.findByIdAndDelete(req.params.id)
+  let author = req.user
+  const newArray = author.articles.filter(article => article._id != req.params.id)
+  author.articles = newArray
+  author = await author.save()
 
-router.post('/logout', (req, res) => { })
+  res.redirect(`/profile/@${req.user.slug}`)
+})
 
 /*
 
@@ -145,7 +152,7 @@ router.get("/auth/google/redirect", passport.authenticate('google'),(req,res)=>{
 
 // Render the profile page with the data from the current logged in user
 router.get("/:profileslug", checkNotAuthenticated,(req,res)=>{
-  //const myProfile = Author.findOne({ _id: req.user._id})
+  
   res.render("profile", { myProfile : req.user})
 });
 
@@ -173,24 +180,29 @@ save new article and redirect or show an error message
 */
 
 
-function saveArticleAndRedirect(author) { 
+function saveArticleAndRedirect() { 
 
     return async (req, res) => { //get all data from the body
 
-      let author = await Author.findById({ _id: req.user._id})
+      let author = req.user
+   
 
-      let article = req.article // get the article form the request body
+      let article = await req.article // get the article form the request body
       article.title = req.body.title 
       article.description = req.body.description
       article.markdown = req.body.markdown
       article.topics = req.body.topics
       article.cover = req.file.filename
       article.author = req.user._id //asign the id of the signed in user
-
+      test = await author.articles.push(article)
+      
       try {
+        if(test > -1) {
         article = await article.save() //try and save the article
-        //author = await author.articles.push(article) 
-        res.redirect(`/article/${article.slug}`) //redirect to the new article
+        author = await author.save()
+       res.redirect(`/article/${article.slug}`) //redirect to the new article
+        }
+        //console.log(test);
       } catch (e) {
         console.log(e) // log the error
         res.render('newArticle', {article: article, error: e.code, imageErr: null, topics : topics }) //pass error messages and render the same pages

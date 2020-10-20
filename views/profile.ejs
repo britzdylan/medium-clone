@@ -20,9 +20,10 @@
         </div>
         <hr />
         <div class="text-gray-700 body-font overflow-hidden">
-            <!-- single article -->
-            <%- include('partials/ProfileArticles') %>
-            <%- include('partials/ProfileArticles') %>
+             <!-- single article -->
+             <% myProfile.articles.map((item,index) => { %>
+                <%- include('partials/articlePreviewProfile', {article: item}) %>
+            <% }) %>
             <!-- ================= -->
     </div>
     </section>

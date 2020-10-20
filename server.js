@@ -1,9 +1,7 @@
-const express = require('express');
+const express = require('express')
 const mongoose = require('mongoose')
-const bodyParser = require('body-parser');
-const fs = require('fs'); 
-const path = require('path'); 
-const cookieSession = require("cookie-session");
+const methodOverride = require('method-override')
+const cookieSession = require("cookie-session")
 
 // import route handlers
 const indexRouter = require('./routes/index')
@@ -19,6 +17,7 @@ app.use(express.static('./public'))
 //set view engine
 app.set('view engine', 'ejs')
 app.use(express.urlencoded({ extended: false }))
+app.use(methodOverride('_method'))
 
 //passportjs setup
 app.use(cookieSession({
