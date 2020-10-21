@@ -22,7 +22,15 @@
 
             <div class="text-white ml-auto flex flex-row">
                 <div class="rounded-full h-8 w-8 ml-5 cursor-pointer flex items-center justify-center overflow-hidden">
-                    <a href="/profile/login"><img  class="object-cover" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" /></a>
+                    <a href="/profile/login">
+                        <% if(user != undefined) { %>
+                            <img  class="object-cover" src="<%= user.profilePicture %>" />
+                        <% } else { %>
+                            <img  class="object-cover" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" />
+                        <% } %>
+                        
+                        
+                    </a>
                 </div>
             </div>
 

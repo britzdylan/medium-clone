@@ -1,4 +1,4 @@
-<%- include('partials/head', {Title: "Sign In"}) %>
+<%- include('partials/head', {Title: "Sign In", user : user}) %>
 
 <section>
     <!--
@@ -9,14 +9,8 @@
     <div class="max-w-md w-full">
       <div>
         <h2 class="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
-         Sign in to your account
+         Sign in or create an account
         </h2>
-        <p class="mt-2 text-center text-sm leading-5 text-gray-600">
-          Or
-          <a href="/profile/register" class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150">
-            sign up here
-          </a>
-        </p>
       </div>
       <a href="/profile/auth/google"><button style="background-color: #4285F4;" class="text-sm my-10 mx-auto items-center flex flex-row w-25 h-15 text-white pr-2 pl-1 pt-1 pb-1 rounded font-bold"><img width="35px" class="mr-3" src="https://developers.google.com/identity/images/g-logo.png" />Sign in with Google</button></a>
     </div>

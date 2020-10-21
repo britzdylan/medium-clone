@@ -105,7 +105,7 @@ router.get('/new-article', checkNotAuthenticated, async (req, res) => {
     //get all topics
     const topics = await Topic.find().sort({ topic: 'asc' })
 
-    res.render('newArticle', { article: new Article(), error: "", imageErr: null, topics : topics  })
+    res.render('newArticle', { article: new Article(), error: "", imageErr: null, topics : topics, user : req.user  })
 })
 
 // ==============================================
@@ -117,14 +117,24 @@ router.get('/edit/:id', async (req, res) => {
   const article = await Article.findById(req.params.id)
 
   //console.log(article);
-  res.render('editArticle', { article: article, error: "", imageErr: null, topics : topics })
+  res.render('editArticle', { article: article, error: "", imageErr: null, topics : topics, user : req.user })
 })
 
 //save the edited article
 router.put('/edit/save/:id', async (req, res, next) => {
-  req.article = await Article.findById(req.params.id)
-  next()
-}, editArticleAndRedirect('editArticle'))
+  const topics = await Topic.find().sort({ topic: 'asc' })
+  upload( req, res, (err) => {
+    if(err) {
+
+      res.render('editArticle', {article: req.article, error: "", imageErr: err, topics : topics }) //pass error message
+    } else {
+
+      req.article = Article.findById(req.params.id) //pass in article
+      //req.user = Author.findById(req.user.id) //find the current user
+    }
+    next()
+  })
+}, saveArticleAndRedirect('editArticle'))
 
 
 
@@ -150,7 +160,7 @@ Get the signin page
 
 */
 router.get('/login', checkAuthenticated, async (req, res) => { 
-  res.render('signin')
+  res.render('signin', {user : req.user})
 })
 
 // ================
@@ -171,9 +181,9 @@ router.get("/auth/google/redirect", passport.authenticate('google'),(req,res)=>{
 });
 
 // Render the profile page with the data from the current logged in user
-router.get("/:profileslug", checkNotAuthenticated,(req,res)=>{
-  
-  res.render("profile", { myProfile : req.user})
+router.get("/:profileslug", checkNotAuthenticated, async (req,res)=>{
+  const articles = await Article.find({ author : req.user._id })
+  res.render("profile", { myProfile : req.user, articles: articles, user : req.user})
 });
 
 
@@ -185,7 +195,9 @@ router.get("/auth/logout", (req, res) => {
 
 // ================
 
-router.delete('/delete/profile/:profielId', (req, res) => { })
+router.delete('/delete/profile/:profielId', (req, res) => { 
+
+ })
 
 
 
@@ -207,60 +219,26 @@ function saveArticleAndRedirect(redirect) {
 
     return async (req, res) => { //get all data from the body
 
-      let author = req.user
-      console.log(req.body);
-
       let article = await req.article // get the article form the request body
-      article.title = req.body.title 
-      article.description = req.body.description
-      article.markdown = req.body.markdown
-      article.topics = req.body.topics
-      article.cover = req.file.filename
+      article.title = req.body.title != undefined ? req.body.title : article.title
+      article.description = req.body.description != undefined ? req.body.description : article.description
+      article.markdown = req.body.markdown != undefined ? req.body.markdown : article.markdown
+      article.topics = req.body.topics != undefined ? req.body.topics : article.topics
+      article.cover = req.file != undefined ? req.file.filename : article.cover
       article.author = req.user._id //asign the id of the signed in user
 
-      //const checkIfArticleExist = await author.articles.findIndex(e => e._id == req.params.id)
-      //console.log(checkIfArticleExist);
-      //let test = -1
-      // if (checkIfArticleExist > -1) {
-      //   author.articles[checkIfArticleExist] = article
-      //   console.log('updating article');
-      //   test = 0
-      // } else {
-      //   
-      //   console.log('creating article');
-      // }
-      await author.articles.push(article)
-      // try {
-      //   article = await article.save() //try and save the article
-      //   author = await author.save() //try and save the author
-      //   res.redirect(`/article/${article.slug}`) //redirect to the new article
+      try {
+        article = await article.save() //try and save the article
+
+        res.redirect(`/article/${article.slug}`) //redirect to the new article
         
-      // } catch (e) {
-      //   console.log(e) // log the error
-      //   res.render(redirect, {article: article, error: e.code, imageErr: null, topics : article.topics }) //pass error messages and render the same pages
-      // }
+      } catch (e) {
+        console.log(e) // log the error
+        res.render(redirect, {article: article, error: e.code, imageErr: null, topics : article.topics }) //pass error messages and render the same pages
+      }
     }
   }
 // ===================================================
 
-
-function editArticleAndRedirect(redirect) {
-
-  return async (req,res) => {
-      let author = req.user
-    console.log(req.body);
-
-      let article = await req.article // get the article form the request body
-      article.title = req.body.title 
-      article.description = req.body.description
-      article.markdown = req.body.markdown
-      article.topics = req.body.topics
-      article.cover = req.file.filename
-      article.author = req.user._id //asign the id of the signed in user
-
-      
-  }
-  
-}
 
 module.exports = router;

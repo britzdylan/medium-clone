@@ -1,10 +1,10 @@
-<%- include('partials/head', { Title: myProfile.fName}) %>
+<%- include('partials/head', { Title: myProfile.fName, user : user}) %>
     <section class="w-1/2 mx-auto">
         <div id="author-details" class="flex flex-row mb-5">
             <div class="text-gray-700 text-sm">
                 <h1 class="text-black font-bold text-3xl"><%= myProfile.fName.charAt(0).toUpperCase() + myProfile.fName.slice(1) + " " + myProfile.lName.charAt(0).toUpperCase() + myProfile.lName.slice(1) %></h1>
-                <p class="mb-5">Software developer and teacher</p>
-                <p>Twitter</p>
+                <p class="mb-5"><%= myProfile.tagline %></p>
+                <a href="https://twitter.com/<%= myProfile.twitterHandle %>" target="=_blank"><img src="/twitter.svg" width="25px" alt="twitter" /></a>
             </div>
             <div class="ml-auto">
                 <div class="rounded-full h-24 w-24 flex items-center justify-center overflow-hidden">
@@ -21,7 +21,7 @@
         <hr />
         <div class="text-gray-700 body-font overflow-hidden">
              <!-- single article -->
-             <% myProfile.articles.map((item,index) => { %>
+             <% articles.map((item,index) => { %>
                 <%- include('partials/articlePreviewProfile', {article: item}) %>
             <% }) %>
             <!-- ================= -->

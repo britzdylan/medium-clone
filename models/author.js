@@ -26,14 +26,19 @@ const authorSchema = new mongoose.Schema({
         type: String
     },
     twitterHandle: {
-        type: String
+        type: String,
+        default: ""
     },
     slug: {
         type: String,
         required: true,
         unique: true
     },
-    articles : [Object]
+    tagline : {
+        type : String,
+        required : true,
+        default: "Hi , I just joined this medium clone"
+    }
 })
 
 authorSchema.pre('validate', function(next) {
