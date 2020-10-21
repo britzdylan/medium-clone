@@ -83,7 +83,7 @@ router.post('/new-article/create', async (req, res, next) => {
     }
     next()
   })
-},saveArticleAndRedirect())// call function to save and redirect
+},saveArticleAndRedirect('newArticle'))// call function to save and redirect
 
 //  ============================================================
 
@@ -110,7 +110,26 @@ router.get('/new-article', checkNotAuthenticated, async (req, res) => {
 
 // ==============================================
 
-router.put('/edit/:articleId', (req, res) => { })
+router.get('/edit/:id', async (req, res) => {
+  //get all topics
+  const topics = await Topic.find().sort({ topic: 'asc' })
+  //get the article
+  const article = await Article.findById(req.params.id)
+
+  //console.log(article);
+  res.render('editArticle', { article: article, error: "", imageErr: null, topics : topics })
+})
+
+//save the edited article
+router.put('/edit/save/:id', async (req, res, next) => {
+  req.article = await Article.findById(req.params.id)
+  next()
+}, editArticleAndRedirect('editArticle'))
+
+
+
+
+//delete the article
 
 router.delete('/:id', async (req, res) => {
 
@@ -123,6 +142,7 @@ router.delete('/:id', async (req, res) => {
 
   res.redirect(`/profile/@${req.user.slug}`)
 })
+// =================
 
 /*
 
@@ -167,6 +187,9 @@ router.get("/auth/logout", (req, res) => {
 
 router.delete('/delete/profile/:profielId', (req, res) => { })
 
+
+
+
 /*
 @Function: saveArticleAndRedirect
 
@@ -180,12 +203,12 @@ save new article and redirect or show an error message
 */
 
 
-function saveArticleAndRedirect() { 
+function saveArticleAndRedirect(redirect) { 
 
     return async (req, res) => { //get all data from the body
 
       let author = req.user
-   
+      console.log(req.body);
 
       let article = await req.article // get the article form the request body
       article.title = req.body.title 
@@ -194,21 +217,50 @@ function saveArticleAndRedirect() {
       article.topics = req.body.topics
       article.cover = req.file.filename
       article.author = req.user._id //asign the id of the signed in user
-      test = await author.articles.push(article)
-      
-      try {
-        if(test > -1) {
-        article = await article.save() //try and save the article
-        author = await author.save()
-       res.redirect(`/article/${article.slug}`) //redirect to the new article
-        }
-        //console.log(test);
-      } catch (e) {
-        console.log(e) // log the error
-        res.render('newArticle', {article: article, error: e.code, imageErr: null, topics : topics }) //pass error messages and render the same pages
-      }
+
+      //const checkIfArticleExist = await author.articles.findIndex(e => e._id == req.params.id)
+      //console.log(checkIfArticleExist);
+      //let test = -1
+      // if (checkIfArticleExist > -1) {
+      //   author.articles[checkIfArticleExist] = article
+      //   console.log('updating article');
+      //   test = 0
+      // } else {
+      //   
+      //   console.log('creating article');
+      // }
+      await author.articles.push(article)
+      // try {
+      //   article = await article.save() //try and save the article
+      //   author = await author.save() //try and save the author
+      //   res.redirect(`/article/${article.slug}`) //redirect to the new article
+        
+      // } catch (e) {
+      //   console.log(e) // log the error
+      //   res.render(redirect, {article: article, error: e.code, imageErr: null, topics : article.topics }) //pass error messages and render the same pages
+      // }
     }
   }
 // ===================================================
+
+
+function editArticleAndRedirect(redirect) {
+
+  return async (req,res) => {
+      let author = req.user
+    console.log(req.body);
+
+      let article = await req.article // get the article form the request body
+      article.title = req.body.title 
+      article.description = req.body.description
+      article.markdown = req.body.markdown
+      article.topics = req.body.topics
+      article.cover = req.file.filename
+      article.author = req.user._id //asign the id of the signed in user
+
+      
+  }
+  
+}
 
 module.exports = router;

@@ -1,4 +1,5 @@
 const express = require('express')
+const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const methodOverride = require('method-override')
 const cookieSession = require("cookie-session")
@@ -13,9 +14,11 @@ const passport = require("passport");
 //load app to express
 const app = express();
 app.use(express.static('./public'))
+ 
 
 //set view engine
 app.set('view engine', 'ejs')
+app.use(express.json()); 
 app.use(express.urlencoded({ extended: false }))
 app.use(methodOverride('_method'))
 
