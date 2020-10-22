@@ -1,22 +1,25 @@
 <%- include('partials/head', { Title: myProfile.fName, user : user}) %>
     <section class="w-1/2 mx-auto">
-        <div id="author-details" class="flex flex-row mb-5">
+        <div id="author-details" class="md:flex flex-row mb-5">
             <div class="text-gray-700 text-sm">
                 <h1 class="text-black font-bold text-3xl"><%= myProfile.fName.charAt(0).toUpperCase() + myProfile.fName.slice(1) + " " + myProfile.lName.charAt(0).toUpperCase() + myProfile.lName.slice(1) %></h1>
                 <p class="mb-5"><%= myProfile.tagline %></p>
                 <a href="https://twitter.com/<%= myProfile.twitterHandle %>" target="=_blank"><img src="/twitter.svg" width="25px" alt="twitter" /></a>
             </div>
-            <div class="ml-auto">
+            <div class="mt-5 md:mt-0 ml-auto">
                 <div class="rounded-full h-24 w-24 flex items-center justify-center overflow-hidden">
                     <img  class="object-cover" src="<%= myProfile.profilePicture %>" />
                 </div>
             </div>
             
         </div>
-        <div class="mb-5 w-full flex flex-row">
-            <a href="/profile/new-article"><button class="border-2 border-green-500 text-green-600 hover:bg-green-100 mr-5 text-small  py-1 px-2 rounded">New Article</button></a>
-            <button class="text-gray-900 text-small hover:bg-gray-200 font-light py-1 px-2 rounded">Edit myProfile</button>
-            <a class="ml-auto" href="/profile/auth/logout"><button class="hover:bg-gray-200 text-gray-600 mr-5  text-small py-1 px-2 rounded">Log Out</button></a>
+        <div class="mb-5 w-full md:flex flex-row flex-wrap">
+            <a href="/profile/new-article"><button class="border-2 border-green-500 text-green-600 hover:bg-green-100 mr-5 text-small  mb-5  py-1 px-2 rounded">New Article</button></a>
+            <a href="/profile/edit-profile/<%= user.id %>"><button class="text-gray-900 text-small hover:bg-gray-200 font-light mb-5 py-1 px-2 rounded">Edit myProfile</button></a>
+            <form action="/profile/delete/<%= user.id %>?_method=DELETE" method="POST" class="inline">
+                <button type="submit" class="text-gray-900 text-small border-2 border-red-300 bg-red-100 font-light mb-5  py-1 px-2 rounded" >Delete article</button>
+            </form>
+            <a class="ml-5 md:ml-auto" href="/profile/auth/logout"><button class="hover:bg-gray-200 text-gray-600 mr-5  mb-5  text-small py-1 px-2 rounded">Log Out</button></a>
         </div>
         <hr />
         <div class="text-gray-700 body-font overflow-hidden">

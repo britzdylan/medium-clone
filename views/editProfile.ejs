@@ -1,0 +1,32 @@
+<%- include('partials/head', {Title: "Edit profile", user : user}) %>
+
+
+<section>
+    <div class="w-2/3 mx-auto">
+
+      
+    <form enctype="application/x-www-form-urlencoded" action="/profile/edit/save-profile/<%= user.id %>?_method=PUT" method="POST">
+        <label class="mt-10 text-lg block" for="fName">First Name</label>
+        <input value="<%= user.fName %>" class="w-full mt-2 py-3 px-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-400 dark:border-gray-700 text-gray-800 font-semibold focus:border-indigo-500 focus:outline-none" type="text" name="fName" id="fName" >
+        
+        <label class="mt-10 text-lg block" for="lName Name">Last Name</label>
+        <input value="<%= user.lName %>" class="w-full mt-2 py-3 px-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-400 dark:border-gray-700 text-gray-800 font-semibold focus:border-indigo-500 focus:outline-none" type="text" name="lName" id="lName" >
+
+        <label class="mt-10 text-lg block" for="tagline">Tag Line</label>
+        <input value="<%= user.tagline %>" class="w-full mt-2 py-3 px-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-400 dark:border-gray-700 text-gray-800 font-semibold focus:border-gray-500 focus:outline-none" maxlength="158" type="text" name="tagline" id="tagline" >
+
+
+        <label class="mt-10 text-lg block" for="TwitterHandle">Twitter Handle</label>
+        <input value="<%= user.twitterHandle %>" class="w-full mt-2 py-3 px-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-400 dark:border-gray-700 text-gray-800 font-semibold focus:border-gray-500 focus:outline-none" maxlength="158" type="text" name="twitterHandle" id="twitterHandle" >
+
+        <button type="submit" class="mt-5 cursor-pointer border-2 border-green-500 bg-green-100 text-green-900 text-lg font-bold py-1 px-2 rounded">Save & Publish</button>
+    </form>
+    <% if(error === 11000) { %>
+    <p>Article title is already in use</p>
+    <% }%>
+
+    </div>
+</section>
+
+
+<%- include('partials/footer') %>

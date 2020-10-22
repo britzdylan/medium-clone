@@ -75,7 +75,7 @@ router.post('/new-article/create', async (req, res, next) => {
   upload( req, res, (err) => {
     if(err) {
 
-      res.render('newArticle', {article: new Article(), error: "", imageErr: err, topics : topics }) //pass error message
+      res.render('newArticle', {article: new Article(), error: "", imageErr: err, topics : topics, user : req.user }) //pass error message
     } else {
 
       req.article = new Article() //pass in article model
@@ -195,8 +195,44 @@ router.get("/auth/logout", (req, res) => {
 
 // ================
 
-router.delete('/delete/profile/:profielId', (req, res) => { 
+// get edit profiele page
 
+router.get("/edit-profile/:id", (req, res) => {
+  res.render("editProfile", { error: "", imageErr: null, user : req.user})
+})
+
+//save profile
+
+router.put('/edit/save-profile/:id', async (req, res, next) => {
+    req.user = Author.findById(req.user.id) //find the current user
+  
+    next()
+}, saveUserAndRedirect())
+
+const deleteUser = async function(id, req, res) { //delete the user
+  await Author.findByIdAndDelete(id)
+  req.logout()
+  res.redirect('/')
+}
+
+router.delete('/delete/:profielId', async (req, res) => { 
+ 
+  //const articles = await Article.find({ author : req.user._id })//find the articles of the user
+
+    await Article.deleteMany({ author : req.params.profielId } , function(err, result) {   //delete all the articles
+
+      if (err) {
+        res.send(err);
+      } else {
+        
+        deleteUser(req.params.profielId, req, res)
+        req.logout()
+        //res.send(result);
+      }
+    });
+
+  
+  
  })
 
 
@@ -239,6 +275,27 @@ function saveArticleAndRedirect(redirect) {
     }
   }
 // ===================================================
+
+function saveUserAndRedirect() {
+
+  return async (req,res) => {
+
+    let user = await req.user
+
+    user.fName = req.body.fName != undefined ? req.body.fName : user.fName
+    user.lName = req.body.lName != undefined ? req.body.lName : user.lName
+    user.tagline = req.body.tagline != undefined ? req.body.tagline : user.tagline
+    user.twitterHandle = req.body.twitterHandle != undefined ? req.body.twitterHandle : user.twitterHandle
+
+    try {
+      user = await user.save()
+
+      res.redirect(`/profile/@${user.id}`)
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}
 
 
 module.exports = router;
