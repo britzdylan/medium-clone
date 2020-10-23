@@ -1,5 +1,5 @@
 <%- include('partials/head', { Title: myProfile.fName, user : user}) %>
-    <section class="w-1/2 mx-auto">
+    <section class="md:w-1/2 px-10 md:px-0 mx-auto">
         <div id="author-details" class="md:flex flex-row mb-5">
             <div class="text-gray-700 text-sm">
                 <h1 class="text-black font-bold text-3xl"><%= myProfile.fName.charAt(0).toUpperCase() + myProfile.fName.slice(1) + " " + myProfile.lName.charAt(0).toUpperCase() + myProfile.lName.slice(1) %></h1>

@@ -1,9 +1,9 @@
 <!-- single article preview -->
-<div class="py-8 px-0 rounded flex flex-wrap md:flex-no-wrap mb-10">
-    <div class="w-1/3 h-64 rounded " >
+<div class="py-8 px-0 rounded md:flex flex-wrap md:flex-no-wrap mb-10">
+    <div class="md:w-1/3 md:h-64 rounded " >
         <a href="/article/<%= article.slug %>"><img class="object-cover" src="/uploads/<%= article.cover %>" loading="lazy"/></a>
     </div>
-    <div class="md:flex-grow w-1/2 px-5">
+    <div class="md:flex-grow md:w-1/2 px-5">
       <a href="/article/<%= article.slug %>"><h2 class="text-2xl font-medium text-gray-900 title-font mb-2"><%= article.title %></h2></a>
       <p class="leading-relaxed"><%= article.description %></p>
       <a href="/article/<%= article.slug %>" class="text-indigo-500 inline-flex items-center mt-4">Learn More

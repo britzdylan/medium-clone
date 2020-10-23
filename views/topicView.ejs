@@ -1,25 +1,39 @@
 <%- include('partials/head', {Title: topicSlug, user : user }) %>
-<section id="container-home" class="grid grid-cols-3 gap-4 divide-x divide-gray-200">
+<section id="container-home" class="md:grid md:grid-cols-3 gap-4 divide-x divide-gray-200">
+    
+
+    <!-- mobile topic -->
+    <div id="topics" class="md:hidden w-full px-5">
+        <h3 class="text-gray-900 text-2xl font-bold mb-10">Browse by topic</h3>
+        <div class="flex flex-row flex-wrap">
+        <% topics.map((item,index) => { %>
+            <a href="/<%= item.slug %>"><p class="font-bold mr-5"><%= item.topic %></p></a>
+        <% }) %>
+        </div>
+    </div>
+    
     <!-- articles -->
     <div id="articles" class="col-span-2 ">
 
         <div class="text-gray-700 body-font overflow-hidden">
                 <!-- single article -->
-               
-                    <% articles.map((item,index) => { %>
-                        <%- include('partials/articlePreview', {article: item}) %>
-                    <% }) %>
-               
+                <% articles.map((item,index) => { %>
+                    <%- include('partials/articlePreview', {article: item}) %>
+                <% }) %>
                 <!-- ================= -->
         </div>
 
     </div>
     <!-- ///////////// -->
-    <div id="topics" class="col-span-1 pl-5">
+    <!-- desktop topics -->
+
+    <div id="topics" class="hidden md:block md:col-span-1 w-full px-5 md:px-0 md:pl-5">
         <h2 class="text-gray-900 text-2xl font-bold mb-10">Browse by topic</h2>
         <% topics.map((item,index) => { %>
-            <%- include('partials/topic', { topic: item }) %>
-            <% }) %>
+        <%- include('partials/topic', { topic: item }) %>
+        <% }) %>
     </div>
+
+    
 </section>
 <%- include('partials/footer') %>

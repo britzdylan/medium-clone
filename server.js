@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const path = require('path');
 const methodOverride = require('method-override')
 const cookieSession = require("cookie-session")
 
@@ -13,7 +14,7 @@ const passport = require("passport");
 
 //load app to express
 const app = express();
-app.use(express.static('./public'))
+app.use(express.static(path.join(__dirname, "public")))
  
 
 //set view engine

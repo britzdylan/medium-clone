@@ -1,6 +1,6 @@
 <%- include('partials/head', {Title: article.title, user : user}) %>
     <section>
-        <div id="article-heading" class="w-1/2 mx-auto ">
+        <div id="article-heading" class="md:w-1/2 px-5 md:px-0 mx-auto ">
             <h1 class="font-bold text-4xl"><%= article.title %></h1>
             <div id="profile-card" class="flex flex-row mt-10 items-center">
                 <div class="rounded-full h-8 w-8 mr-5 cursor-pointer flex items-center justify-center overflow-hidden">
@@ -17,10 +17,10 @@
         </div>
 
         <div id="article-body">
-            <div class="w-2/3 mx-auto my-20">
+            <div class="md:w-2/3 px-5 md:px-0 mx-auto my-20">
                 <img width="100%" src="/uploads/<%= article.cover %>" />
             </div>
-            <article class="w-1/2 mx-auto ">
+            <article class="md:w-1/2 px-5 md:px-0 mx-auto ">
                 <%- article.sanitizedHtml %>           
             </article>
         </div>

@@ -1,5 +1,5 @@
 <%- include('partials/head', {Title: author.fName.charAt(0).toUpperCase() + author.fName.slice(1), user : user})  %>
-    <section class="w-1/2 mx-auto">
+    <section class="md:w-1/2 px-10 md:px-0 mx-auto">
         <div id="author-details" class="flex flex-row mb-5">
             <div class="text-gray-700 text-sm">
                 <h1 class="text-black font-bold text-3xl"><%= author.fName.charAt(0).toUpperCase() + author.fName.slice(1) %>  <%= author.lName.charAt(0).toUpperCase() + author.lName.slice(1) %></h1>
