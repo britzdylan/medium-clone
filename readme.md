@@ -27,6 +27,7 @@ ___
 1. MongoDB
 2. NodeJS v10.16.3
 3. NPM 6.14.8
+4. Google oAuth Token and secret that gets add in the .env - to set one up read here: [Creating OAuth client ID](https://medium.com/javascript-in-plain-english/node-and-passport-js-google-oauth20-authentication-8bcd6b3d67ca#e3c8) 
 
 `
     git clone https://github.com/britzdylan/medium-clone.git
