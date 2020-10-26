@@ -3,57 +3,14 @@ const Article = require('./../models/article')
 const Topic = require('./../models/topic')
 const Author = require('./../models/author')
 const passport = require("passport");
-
+const upload = require("../services/s3")
 const {GoogleStrategy , checkAuthenticated, checkNotAuthenticated} = require('./../utils/passport-google-auth')
 
 const router = express.Router()
 
-//multer for file uploads
-const path = require('path'); 
-const multer = require('multer'); 
 
-const storage = multer.diskStorage({
-  destination: './public/uploads',
-  filename: function(req, file, cb){
-    cb(null,file.fieldname + '-' + Date.now() + path.extname(file.originalname)) //name of each uplaod
-  }
-})
-
-
-//init upload
-const upload = multer({
-  storage: storage, // call storage variable
-  limits: {
-    fileSize: 2500000 // max size 2.5mb
-  },
-  fileFilter: function(req,file,cb) {
-    checkFileType(file, cb) // all the check file function
-  }
-}).single('cover'); 
-
-
-
-
-//function check file type
-
-function checkFileType(file, cb) {
-
-//allowed ext
-const fileTypes = /jpeg|jpg/;
-
-//check ext
-const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
-
-//check mimetype
-const mimetype = fileTypes.test(file.mimetype);
-
-if(mimetype && extname){
-  return cb(null, true);
-} else {
-  cb('error: file type not supported, jpg or jpeg only')
-}
-}
-
+//upload method
+const singleUpload = upload.single('cover');
 
 
 
@@ -72,7 +29,7 @@ router.post('/new-article/create', async (req, res, next) => {
 
   const topics = await Topic.find().sort({ topic: 'asc' }) // fetch all topics, sort by name
 
-  upload( req, res, (err) => {
+  singleUpload( req, res, (err) => {
     if(err) {
 
       res.render('newArticle', {article: new Article(), error: "", imageErr: err, topics : topics, user : req.user }) //pass error message
@@ -145,10 +102,10 @@ router.delete('/:id', async (req, res) => {
 
   const article = await Article.findById(req.params.id)
   await Article.findByIdAndDelete(req.params.id)
-  let author = req.user
-  const newArray = author.articles.filter(article => article._id != req.params.id)
-  author.articles = newArray
-  author = await author.save()
+  // let author = req.user
+  // const newArray = author.articles.filter(article => article._id != req.params.id)
+  // author.articles = newArray
+  // author = await author.save()
 
   res.redirect(`/profile/@${req.user.slug}`)
 })
@@ -252,15 +209,15 @@ save new article and redirect or show an error message
 
 
 function saveArticleAndRedirect(redirect) { 
-
+    
     return async (req, res) => { //get all data from the body
-
+      //console.log(req.file);
       let article = await req.article // get the article form the request body
       article.title = req.body.title != undefined ? req.body.title : article.title
       article.description = req.body.description != undefined ? req.body.description : article.description
       article.markdown = req.body.markdown != undefined ? req.body.markdown : article.markdown
       article.topics = req.body.topics != undefined ? req.body.topics : article.topics
-      article.cover = req.file != undefined ? req.file.filename : article.cover
+      article.cover = req.file != undefined ? req.file.location : article.cover
       article.author = req.user._id //asign the id of the signed in user
 
       try {
@@ -270,7 +227,7 @@ function saveArticleAndRedirect(redirect) {
         
       } catch (e) {
         console.log(e) // log the error
-        res.render(redirect, {article: article, error: e.code, imageErr: null, topics : article.topics }) //pass error messages and render the same pages
+        res.render(redirect, {article: article, error: e.code, imageErr: null, topics : article.topics, user : req.user }) //pass error messages and render the same pages
       }
     }
   }

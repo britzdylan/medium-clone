@@ -47,17 +47,6 @@ passport.use(
               }
             })
           }
-           // console.log(userName, checkSlug);
-                // new Author({
-                //   googleId: profile.id,
-                //   email : profile.emails[0].value ,
-                //   fName : profile.name.givenName,
-                //   lName : profile.name.familyName,
-                //   username: userName,
-                //   profilePicture : profile.photos[0].value,
-                // }).save().then((newUser) =>{
-                //   done(null, newUser)
-                // }
       })
     }
   ));
